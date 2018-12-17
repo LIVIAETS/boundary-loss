@@ -1,4 +1,4 @@
-CC = python3.7
+CC = python3.6
 SHELL = /usr/bin/zsh
 
 # CFLAGS = -O
