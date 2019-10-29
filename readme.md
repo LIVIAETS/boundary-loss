@@ -13,6 +13,8 @@ Non-exhaustive list:
 * Scikit-image
 * zsh
 
+For a Keras/Tensorflow implementation, see at the bottom of the readme
+
 ## Usage
 Instruction to download the data are contained in the lineage files [ISLES.lineage](data/ISLES.lineage) and [wmh.lineage](data/wmh.lineage). They are just text files containing the md5sum of the original zip.
 
@@ -138,3 +140,8 @@ cd results/isles/gdl
 convert iter*/val/case_14_0_0.png case_14_0_0.gif
 mogrify -normalize case_14_0_0.gif
 ```
+
+## Keras/Tensorflow implementation
+Some users contributed to a Keras/Tensorflow implementation. The discussion and code is available in the [related github issue](https://github.com/LIVIAETS/surface-loss/issues/14#issuecomment-546342163).
+
+Those contribution will be integrated in the main repository at some point in the future, once a multi-class implementation is written.
