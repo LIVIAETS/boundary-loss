@@ -1,11 +1,18 @@
 # Boundary loss
-Code for our MIDL 2019 submission: [Boundary loss for highly unbalanced segmentation](https://openreview.net/forum?id=S1gTA5VggE)
+Official repository for [Boundary loss for highly unbalanced segmentation](http://proceedings.mlr.press/v102/kervadec19a.html), _runner-up for best paper award_ at [MIDL 2019](https://2019.midl.io).
+
+A journal extension has been published in [Medical Image Analysis (MedIA), volume 67](https://doi.org/10.1016/j.media.2020.101851).
+
+* [MIDL 2019 Proceedings](http://proceedings.mlr.press/v102/kervadec19a.html)
+* [MedIA volume](https://doi.org/10.1016/j.media.2020.101851)
+* [arXiv preprint](https://arxiv.org/abs/1812.07032)
+
 ![Visual comparison](resources/readme_comparison.png)
 
-## Requirements
+## Requirements (PyTorch)
 Non-exhaustive list:
 * python3.6+
-* Pytorch 1.0
+* Pytorch 1.0+
 * nibabel
 * Scipy
 * NumPy
@@ -13,7 +20,13 @@ Non-exhaustive list:
 * Scikit-image
 * zsh
 
-For a Keras/Tensorflow implementation, see at the bottom of the readme
+## Other frameworks
+### Keras/Tensorflow
+@akamojo and @marcinkaczor proposed a Keras/Tensorflow implementation (I am very grateful for that), available in [keras_loss.py](keras_loss.py).
+The discussion is available in the [related github issue](https://github.com/LIVIAETS/surface-loss/issues/14).
+
+### Others
+People willing to contribute other implementations can create a new pull-request, for their favorite framework.
 
 ## Usage
 Instruction to download the data are contained in the lineage files [ISLES.lineage](data/ISLES.lineage) and [wmh.lineage](data/wmh.lineage). They are just text files containing the md5sum of the original zip.
@@ -140,8 +153,3 @@ cd results/isles/gdl
 convert iter*/val/case_14_0_0.png case_14_0_0.gif
 mogrify -normalize case_14_0_0.gif
 ```
-
-## Keras/Tensorflow implementation
-Some users contributed to a Keras/Tensorflow implementation. The discussion and code is available in the [related github issue](https://github.com/LIVIAETS/surface-loss/issues/14#issuecomment-546342163).
-
-Those contribution will be integrated in the main repository at some point in the future, once a multi-class implementation is written.
