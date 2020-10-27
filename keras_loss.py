@@ -42,6 +42,7 @@ def surface_loss_keras(y_true, y_pred):
 #         self.update_fn = update_fn
 #     def on_epoch_end(self, epoch, logs=None):
 #         updated_alpha = self.update_fn(K.get_value(self.alpha))
+#         K.set_value(self.alpha, updated_alpha)
 
 
 # alpha = K.variable(1, dtype='float32')
