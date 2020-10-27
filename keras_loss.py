@@ -47,6 +47,14 @@ def surface_loss_keras(y_true, y_pred):
 
 # alpha = K.variable(1, dtype='float32')
 
+# def gl_sl_wrapper(alpha):
+#     def gl_sl(y_true, y_pred):
+#         return alpha * generalized_dice_loss(
+#             y_true, y_pred) + (1 - alpha) * surface_loss_keras(y_true, y_pred)
+#     return gl_sl
+
+# model.compile(loss=gl_sl_wrapper(alpha))
+
 # def update_alpha(value):
 #   return np.clip(value - 0.01, 0.01, 1)
 
