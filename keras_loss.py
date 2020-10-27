@@ -37,7 +37,7 @@ def surface_loss_keras(y_true, y_pred):
 # ### https://github.com/LIVIAETS/boundary-loss/issues/14#issuecomment-547048076
 
 # class AlphaScheduler(Callback):
-#     def init(self, alpha, update_fn):
+#     def __init__(self, alpha, update_fn):
 #         self.alpha = alpha
 #         self.update_fn = update_fn
 #     def on_epoch_end(self, epoch, logs=None):
