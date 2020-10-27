@@ -37,14 +37,23 @@ def surface_loss_keras(y_true, y_pred):
 # ### https://github.com/LIVIAETS/boundary-loss/issues/14#issuecomment-547048076
 
 # class AlphaScheduler(Callback):
-#     def init(self, alpha, update_fn):
+#     def __init__(self, alpha, update_fn):
 #         self.alpha = alpha
 #         self.update_fn = update_fn
 #     def on_epoch_end(self, epoch, logs=None):
 #         updated_alpha = self.update_fn(K.get_value(self.alpha))
+#         K.set_value(self.alpha, updated_alpha)
 
 
 # alpha = K.variable(1, dtype='float32')
+
+# def gl_sl_wrapper(alpha):
+#     def gl_sl(y_true, y_pred):
+#         return alpha * generalized_dice_loss(
+#             y_true, y_pred) + (1 - alpha) * surface_loss_keras(y_true, y_pred)
+#     return gl_sl
+
+# model.compile(loss=gl_sl_wrapper(alpha))
 
 # def update_alpha(value):
 #   return np.clip(value - 0.01, 0.01, 1)
