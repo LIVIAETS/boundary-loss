@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.9
+#!/usr/bin/env python3.7
 
 import torch.nn as nn
 import torch.nn.functional as F
@@ -14,10 +14,22 @@ def convBatch(nin, nout, kernel_size=3, stride=1, padding=1, bias=False, layer=n
 
 def upSampleConv(nin, nout, kernel_size=3, upscale=2, padding=1, bias=False):
     return nn.Sequential(
-        nn.Upsample(scale_factor=upscale),
+        # nn.Upsample(scale_factor=upscale),
+        interpolate(mode='nearest', scale_factor=upscale),
         convBatch(nin, nout, kernel_size=kernel_size, stride=1, padding=padding, bias=bias),
         convBatch(nout, nout, kernel_size=3, stride=1, padding=1, bias=bias),
     )
+
+
+class interpolate(nn.Module):
+    def __init__(self, scale_factor, mode='nearest'):
+        super().__init__()
+
+        self.scale_factor = scale_factor
+        self.mode = mode
+
+    def forward(self, cin):
+        return F.interpolate(cin, mode=self.mode, scale_factor=self.scale_factor)
 
 
 class residualConv(nn.Module):
