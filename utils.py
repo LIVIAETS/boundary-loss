@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3.9
 
 from random import random
 from pathlib import Path

@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.6
+#!/usr/bin/env python3.9
 
 import torch.nn as nn
 import torch.nn.functional as F

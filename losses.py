@@ -1,4 +1,4 @@
-#!/usr/env/bin python3.6
+#!/usr/env/bin python3.9
 
 from typing import List
 
