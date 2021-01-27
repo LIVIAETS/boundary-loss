@@ -1,0 +1,3 @@
+[submodule "viewer"]
+	path = viewer
+	url = git@github.com:HKervadec/segmentation_viewer.git
