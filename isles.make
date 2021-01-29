@@ -20,8 +20,8 @@ EPC = 100
 
 K = 2
 BS = 8
-G_RGX = (\d+_\d+)_\d+
-P_RGX = (\d+)_\d+_\d+
+G_RGX = (case_\d+_\d+)_\d+
+P_RGX = (case_\d+)_\d+_\d+
 NET = UNet
 B_DATA = [('in_npy', tensor_transform, False), ('gt_npy', gt_transform, True)]
 
@@ -204,7 +204,7 @@ $(RD)/val_3d_hausdorff.png $(RD)/val_3d_hd95.png: plot.py $(TRN)
 $(RD)/val_dice_boxplot.png: COLS = 1
 $(RD)/val_dice_boxplot.png: moustache.py $(TRN)
 
-$(RD)/%.png:
+$(RD)/%.png: | metrics
 	$(info $(blue)$(CC) $(CFLAGS) $< $@$(reset))
 	$(eval metric:=$(subst _boxplot,,$(@F)))  # Needed to use same recipe for both histogram and plots
 	$(eval metric:=$(subst _hist,,$(metric)))

@@ -196,7 +196,7 @@ $(RD)/val_3d_hausdorff.png $(RD)/val_3d_hd95.png: plot.py $(TRN)
 $(RD)/val_dice_boxplot.png: COLS = 1
 $(RD)/val_dice_boxplot.png: moustache.py $(TRN)
 
-$(RD)/%.png:
+$(RD)/%.png: | metrics
 	$(info $(blue)$(CC) $(CFLAGS) $< $@$(reset))
 	$(eval metric:=$(subst _boxplot,,$(@F)))  # Needed to use same recipe for both histogram and plots
 	$(eval metric:=$(subst _hist,,$(metric)))  
