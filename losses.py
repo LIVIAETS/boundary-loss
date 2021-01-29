@@ -6,7 +6,7 @@ import torch
 import numpy as np
 from torch import Tensor, einsum
 
-from utils import simplex, probs2one_hot
+from utils import simplex, probs2one_hot, one_hot
 from utils import one_hot2hd_dist
 
 
@@ -81,7 +81,7 @@ class SurfaceLoss():
 
     def __call__(self, probs: Tensor, dist_maps: Tensor) -> Tensor:
         assert simplex(probs)
-        # assert not one_hot(dist_maps)
+        assert not one_hot(dist_maps)
 
         pc = probs[:, self.idc, ...].type(torch.float32)
         dc = dist_maps[:, self.idc, ...].type(torch.float32)

@@ -121,7 +121,7 @@ def do_epoch(mode: str, net: Any, device: Any, loaders: list[DataLoader], epc: i
 
                         assert len(loss_fns) == len(loss_weights) == len(labels)
                         ziped = zip(loss_fns, labels, loss_weights)
-                        losses = [w * loss_fn(pred_probs, target)
+                        losses = [w * loss_fn(pred_probs, label)
                                   for loss_fn, label, w in ziped]
                         loss = reduce(add, losses)
                         assert loss.shape == (), loss.shape
@@ -133,7 +133,7 @@ def do_epoch(mode: str, net: Any, device: Any, loaders: list[DataLoader], epc: i
 
                         # Compute and log metrics
                         for j in range(len(loss_fns)):
-                                loss_log[done_batch, ...] = losses[j].detach()
+                                loss_log[done_batch, j] = losses[j].detach()
 
                         sm_slice = slice(done_img, done_img + B)  # Values only for current batch
 
