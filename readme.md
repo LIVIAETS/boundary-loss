@@ -39,9 +39,9 @@ People willing to contribute other implementations can create a new pull-request
 The boundary loss, at its core, is a pixel-wise multiplication between the network predictions (the _softmaxes_), and a pre-computed distance map. Henceforth, a big chunk of the implementation happens at the data-loader level.
 
 The implementation has three key functions:
-* the boundary loss itself (`BoundaryLoss` in [losses.py#76](losses.py#76));
-* the distance map function (`one_hot2dist` in [utils.py#260](utils.py#260));
-* the dataloader transforms (`dist_map_transform` in [dataloader.py#105](dataloader.py#105)).
+* the boundary loss itself (`BoundaryLoss` in [losses.py#L76](losses.py#L76));
+* the distance map function (`one_hot2dist` in [utils.py#L260](utils.py#L260));
+* the dataloader transforms (`dist_map_transform` in [dataloader.py#L105](dataloader.py#L105)).
 
 This codebase computes the distance map at the dataloader level, taking as an input the label file (stored as a `.png`), putting it through the `dist_map_transform`, and then returning it with the corresponding input image. A higher-order view of the process:
 ```python
@@ -99,7 +99,7 @@ disttransform = dist_map_transform([0.97, 1, 2.5], 5)
 ```
 would be for a 5-classes setting, with the `z` axis much wider than `x` or `y`.
 
-When dealing with a distance map in 3D, it is easiest to compute it while slicing the 3D volume to 2D images. An example of such processing is done in [preprocess/slice_wmh.py#94](preprocess/slice_wmh.py#94)).
+When dealing with a distance map in 3D, it is easiest to compute it while slicing the 3D volume to 2D images. An example of such processing is done in [preprocess/slice_wmh.py#L94](preprocess/slice_wmh.py#L94)).
 
 ## Extension to 3D
 Extension to a 3D-CNN is trivial, one need only to pre-compute the 3D-distance map, and to sub-patch it in a traditionnal fashion.
