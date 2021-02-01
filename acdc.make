@@ -74,26 +74,9 @@ data/acdc: data/acdc.lineage data/acdc.zip
 	rm $@_tmp/training/*/*_4d.nii.gz  # space optimization
 	mv $@_tmp $@
 
-weaks = data/ACDC-2D/train/erosion data/ACDC-2D/val/erosion \
-	data/ACDC-2D/train/random data/ACDC-2D/val/random
-weak: $(weaks)
 
 data/ACDC-2D/train/img data/ACDC-2D/val/img: | data/ACDC-2D
 data/ACDC-2D/train/gt data/ACDC-2D/val/gt: | data/ACDC-2D
-
-
-npys = data/ACDC-2D/train/gt_npy data/ACDC-2D/val/gt_npy \
-	data/ACDC-2D/train/img_npy data/ACDC-2D/val/img_npy
-npy: $(npys)
-
-data/ACDC-2D/train/gt_npy data/ACDC-2D/val/gt_npy: MODE = to_one_hot_npy
-data/ACDC-2D/train/img_npy data/ACDC-2D/val/img_npy: MODE = to_npy
-
-%_npy: %
-	$(info $(yellow)$(CC) $(CFLAGS) map_png.py --mode to_npy $@ $(reset))
-	mkdir -p $@_tmp
-	$(CC) $(CFLAGS) map_png.py --mode $(MODE) --src $< --dest $@_tmp -K $(K)
-	mv $@_tmp $@
 
 
 # Trainings
@@ -140,14 +123,14 @@ $(RD)/%.png:
 	$(eval metric:=$(subst _boxplot,,$(metric)))
 	$(eval metric:=$(subst .png,.npy,$(metric)))
 	$(CC) $(CFLAGS) $< --filename $(metric) --folders $(filter-out $<,$^) --columns $(COLS) \
-		--savefig=$@ --headless --epc 199 $(OPT)
+		--savefig=$@ --headless $(OPT)
 
 
 # Viewing
-view: $(TRN) | weak
-	viewer/viewer.py -n 3 --img_source data/ACDC-2D/val/img data/ACDC-2D/val/gt data/ACDC-2D/val/random \
+view: $(TRN)
+	viewer/viewer.py -n 3 --img_source data/ACDC-2D/val/img data/ACDC-2D/val/gt \
 		$(addsuffix /best_epoch/val, $^) --crop 10 \
-		--display_names gt random $(notdir $^) --no_contour -C $(K)
+		--display_names gt $(notdir $^) --no_contour -C $(K)
 
 report: $(TRN)
 	$(info $(yellow)$(CC) $(CFLAGS) report.py$(reset))

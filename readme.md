@@ -9,7 +9,26 @@ A journal extension has been published in [Medical Image Analysis (MedIA), volum
 
 ![Visual comparison](resources/readme_comparison.png)
 
-The code has been simplified and updated to the latest Python and Pytorch release.
+The code has been simplified and updated to the latest Python and Pytorch release. On top of the original ISLES and WMH datasets, we also include a working example in a multi-class setting (ACDC dataset), *where the boundary loss can work as a stand-alone loss*.
+
+## Table of contents
+* [Table of contents](#table-of-contents)
+* [Requirements (PyTorch)](#requirements-pytorch)
+* [Other frameworks](#other-frameworks)
+    * [Keras/tensorflow](#kerastensorflow)
+    * [Others](#others)
+* [Usage](#usage)
+* [Extension to 3D](#extension-to-3d)
+* [Automation](#automation)
+    * [Data scheme](#data-scheme)
+        * [dataset](#dataset)
+        * [results](#results)
+    * [Cool tricks](#cool-tricks)
+* [Multi-class setting](#multi-class-setting)
+* [Frequently asked questions](#frequently-asked-questions)
+    * Can the loss be negative?
+    * Do I need to normalize the distance map?
+
 
 ## Requirements (PyTorch)
 Core implementation (to integrate the boundary loss into your own code):
@@ -141,8 +160,8 @@ make -f isles.make results/isles/val_dice.png # Create only this plot. Do the tr
 ```
 There is many options for the main script, because I use the same code-base for other projects. You can safely ignore most of them, and the different recipe in the makefiles should give you an idea on how to modify the training settings and create new targets. In case of questions, feel free to contact me.
 
-## Data scheme
-### datasets
+### Data scheme
+#### datasets
 For instance
 ```
 ISLES/
@@ -174,7 +193,7 @@ The network takes npy files as an input (there is multiple modalities), but imag
 mogrify -normalize data/ISLES/val/gt/*.png
 ```
 
-### results
+#### results
 ```
 results/
     isles/
@@ -201,7 +220,7 @@ archives/
     $(REPO)-$(DATE)-$(HASH)-$(HOSTNAME)-wmh.tar.gz
 ```
 
-## Cool tricks
+### Cool tricks
 Remove all assertions from the code. Usually done after making sure it does not crash for one complete epoch:
 ```sh
 make -f isles.make <anything really> CFLAGS=-O
@@ -234,9 +253,17 @@ convert iter*/val/case_14_0_0.png case_14_0_0.gif
 mogrify -normalize case_14_0_0.gif
 ```
 
+## Multi-class setting
+The implementation for multi-class is trivial and requires no modification: one only requires to change the parameters `idc` of the boundary loss to supervise all classes. In the case of ACDC (4-classes), we have:
+```python
+boundary_loss = BoundaryLoss(idc=[0, 1, 2, 3])
+```
+
+![Boundary loss as a stand-alone loss](resources/acdc_bl.png)
+
 ## Frequently asked question
-### Can the loss be negative ?
+### Can the loss be negative?
 Yes. As the distance map is signed (meaning that inside the object, the distance is negative), a perfect prediction will sum only negative distances, leading to a negative value. As we are in a minimization setting, this is not an issue.
 
-### Do I need to normalize the distance map ?
+### Do I need to normalize the distance map?
 Possibly, it will be dataset dependent. In our experiments, we did not had to, but several persons reported that normalization helped in their respective application.
