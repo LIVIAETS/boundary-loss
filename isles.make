@@ -215,7 +215,7 @@ $(RD)/%.png: | metrics
 
 # Viewing
 view: $(TRN)
-	viewer/viewer.py -n 3 --img_source data/ISLES/val/flair data/ISLES/val/gt $(addsuffix /best_epoch/val, $^) --crop 10 \
+	viewer/viewer.py -n 3 --img_source data/ISLES/val/tmax data/ISLES/val/gt $(addsuffix /best_epoch/val, $^) --crop 10 \
 		--display_names gt $(shell basename -a -s '/' $^) $(DEBUG)
 	# viewer -n 3 --img_source data/ISLES/val/flair data/ISLES/val/gt $(addsuffix /iter000/val, $^) --crop 10 \
 
