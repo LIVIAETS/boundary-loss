@@ -25,9 +25,10 @@ The code has been simplified and updated to the latest Python and Pytorch releas
         * [results](#results)
     * [Cool tricks](#cool-tricks)
 * [Multi-class setting](#multi-class-setting)
-* [Frequently asked questions](#frequently-asked-questions)
-    * Can the loss be negative?
-    * Do I need to normalize the distance map?
+* [Frequently asked questions](#frequently-asked-question)
+    * [Can the loss be negative?](#can-the-loss-be-negative)
+    * [Do I need to normalize the distance map?](#do-i-need-to-normalize-the-distance-map)
+* [Other papers using boundary loss](#other-papers-using-boundary-loss)
 
 
 ## Requirements (PyTorch)
@@ -267,3 +268,13 @@ Yes. As the distance map is signed (meaning that inside the object, the distance
 
 ### Do I need to normalize the distance map?
 Possibly, it will be dataset dependent. In our experiments, we did not had to, but several persons reported that normalization helped in their respective application.
+
+## Other papers using boundary loss
+If your paper uses the boundary loss, and you want to be added, feel free to drop us a message.
+
+* How Distance Transform Maps Boost Segmentation CNNs: An Empirical Study, MIDL 2020, [Conference link](https://2020.midl.io/papers/ma20a.html), [code](https://github.com/JunMa11/SegWithDistMap)
+* Multi-modal U-Nets with Boundary Loss and Pre-training for Brain Tumor Segmentation, MICCAI Brainlesion Workshop 2020, [proceedings](https://link.springer.com/chapter/10.1007/978-3-030-46643-5_13)
+* Deep learning approach to left ventricular non-compactionmeasurement, pre-print 2020, [arXiv](https://arxiv.org/abs/2011.14773)
+* Esophageal Tumor Segmentation in CT Imagesusing Dilated Dense Attention Unet (DDAUnet), pre-print 2020, [arXiv](https://arxiv.org/abs/2012.03242), [code](https://github.com/yousefis/DenseUnet_Esophagus_Segmentation)
+* Vehicle lane markings segmentation and keypoint determination using deep convolutional neural networks, Multimedia Tools and Applications (2021), [journal link](https://link.springer.com/article/10.1007/s11042-020-10248-2)
+* A global method to identify trees outside of closed-canopy forests with medium-resolution satellite imagery, International journal of remote sensing 2021, [DOI](https://doi.org/10.1080/01431161.2020.1841324), [code](https://github.com/wri/restoration-mapper)
