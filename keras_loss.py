@@ -21,7 +21,7 @@ def calc_dist_map(seg):
 def calc_dist_map_batch(y_true):
     y_true_numpy = y_true.numpy()
     return np.array([calc_dist_map(y)
-                     for y in y_true_numpy]).astype(np.float32)
+                     for y in y_true_numpy]).reshape(y_true.shape).astype(np.float32)
 
 
 def surface_loss_keras(y_true, y_pred):
