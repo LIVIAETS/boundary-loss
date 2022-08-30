@@ -4,6 +4,7 @@ import io
 import re
 import pickle
 import random
+import collections.abc as container_abcs
 from pathlib import Path
 from itertools import repeat
 from operator import itemgetter, mul
@@ -17,7 +18,6 @@ from PIL import Image, ImageOps
 from torch import Tensor
 from torchvision import transforms
 from skimage.transform import resize
-from torch._six import container_abcs
 from torch.utils.data import Dataset, DataLoader, Sampler
 
 from utils import map_, class2one_hot, one_hot2dist, id_
@@ -362,9 +362,9 @@ def custom_collate(batch):
                 if _use_shared_memory:
                         # If we're in a background process, concatenate directly into a
                         # shared memory tensor to avoid an extra copy
-                        numel = sum([x.numel() for x in batch])
+                        numel = sum(x.numel() for x in batch)
                         storage = elem.storage()._new_shared(numel)
-                        out = elem.new(storage)
+                        out = elem.new(storage).resize_(len(batch), *list(elem.size()))
                 return torch.stack(batch, 0, out=out)
         elif isinstance(elem, np.ndarray):
                 return np.stack(batch)
