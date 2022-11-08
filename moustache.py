@@ -13,6 +13,7 @@ from utils import map_
 
 
 def run(args: argparse.Namespace) -> None:
+    plt.rc('font', size=args.fontsize)
     # if len(args.columns) > 1:
     #     raise NotImplementedError("Only 1 columns at a time is handled for now")
 
@@ -24,7 +25,7 @@ def run(args: argparse.Namespace) -> None:
     if len(arrays[0].shape) == 2:
         arrays = map_(lambda a: a[..., np.newaxis], arrays)  # Add an extra dimension for column selection
 
-    fig = plt.figure(figsize=(14, 9))
+    fig = plt.figure(figsize=args.figsize)
     ax = fig.gca()
 
     ymin, ymax = args.ylim  # Tuple[int, int]
@@ -33,11 +34,23 @@ def run(args: argparse.Namespace) -> None:
     ystep: float = yrange / 10
     ax.set_yticks(np.mgrid[ymin:ymax + ystep:ystep])
 
-    ax.set_xlabel(metric_name)
-    ax.set_ylabel("Percentage")
-    ax.grid(True, axis='y')
-    ax.set_title(f"{metric_name} moustaches")
+    if not args.xlabel:
+        ax.set_xlabel(metric_name)
+    else:
+        ax.set_xlabel(args.xlabel)
 
+    if not args.ylabel:
+        ax.set_ylabel("Percentage")
+    else:
+        ax.set_ylabel(args.ylabel)
+
+    ax.grid(True, axis='y')
+    if not args.title:
+        ax.set_title(f"{metric_name} moustaches")
+    else:
+        ax.set_title(args.title)
+
+    # bins = np.linspace(0, 1, args.nbins)
     pos = 0
     for i, (a, p) in enumerate(zip(arrays, paths)):
         for k in args.columns:
@@ -54,8 +67,17 @@ def run(args: argparse.Namespace) -> None:
             pos += 1
     # ax.legend()
 
-    ax.set_xticklabels([""] + [f"{p.parent.stem}-{k}" for p in paths for k in range(len(args.columns))],
-                       rotation=60)
+    if not args.labels:
+        ax.set_xticklabels([""] + [f"{p.parent.stem}-{k}" for p in paths for k in range(len(args.columns))],
+                           rotation=60)
+    else:
+        if len(args.columns):
+            ax.set_xticklabels([""] + [f"{l}-{k}" for l in args.labels for k in range(len(args.columns))],
+                               rotation=60)
+        else:
+            ax.set_xticklabels([""] + [f"{l}" for l in args.labels],
+                               rotation=60)
+
     ax.set_xticks(np.mgrid[0:len(args.folders) * len(args.columns) + 1])
 
     fig.tight_layout()
@@ -74,16 +96,22 @@ def get_args() -> argparse.Namespace:
     parser.add_argument("--savefig", type=str, default=None)
     parser.add_argument("--headless", action="store_true")
     parser.add_argument("--nbins", type=int, default=100)
+    parser.add_argument("--epc", type=int, required=True)
 
     parser.add_argument("--ylim", type=float, nargs=2, default=[0, 1])
+
+    parser.add_argument("--xlabel", type=str, default='')
+    parser.add_argument("--ylabel", type=str, default='')
+    parser.add_argument("--labels", type=str, nargs='*')
+    parser.add_argument("--title", type=str, default=None)
+    parser.add_argument("--loc", type=str, default=None)
+    parser.add_argument("--figsize", type=int, nargs='*', default=[14, 9])
+    parser.add_argument("--fontsize", type=int, default=10, help="Dummy opt for compatibility")
 
     # Dummies
     parser.add_argument("--debug", action="store_true", help="Dummy for compatibility")
     parser.add_argument("--cpu", action="store_true", help="Dummy for compatibility")
-    parser.add_argument("--fontsize", type=int, default=10, help="Dummy opt for compatibility")
-    parser.add_argument("--ylabel", type=str, default='')
-    parser.add_argument("--labels", type=str, nargs='*')
-    parser.add_argument("--loc", type=str, default=None)
+    parser.add_argument("--save_csv", action="store_true", help="Dummy for compatibility")
     args = parser.parse_args()
 
     print(args)
