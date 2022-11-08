@@ -243,7 +243,19 @@ def class2one_hot(seg: Tensor, K: int) -> Tensor:
 
 
 def np_class2one_hot(seg: np.ndarray, K: int) -> np.ndarray:
-    return class2one_hot(torch.from_numpy(seg.copy()).type(torch.int64), K).numpy()
+        # print("Np enters")
+        """
+        Seems to be blocking here when using multi-processing.
+        Don't know why, so for now I'll re-implement the same function in numpy
+        which should be faster anyhow, but can introduce inconsistencies in the code
+        so need to be careful.
+        """
+        b, w, h = seg.shape
+        res = np.zeros((b, K, w, h), dtype=np.int64)
+        np.put_along_axis(res, seg[:, None, :, :], 1, axis=1)
+
+        return res
+        # return class2one_hot(torch.from_numpy(seg.copy()).type(torch.int64), K).numpy()
 
 
 def probs2one_hot(probs: Tensor) -> Tensor:
