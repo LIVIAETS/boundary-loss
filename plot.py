@@ -7,6 +7,7 @@ from subprocess import call
 from itertools import cycle
 
 import numpy as np
+import pandas as pd
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -70,8 +71,11 @@ def run(args: argparse.Namespace) -> None:
     else:
         labels = [p.parent.name for p in paths]
 
-    xnew = np.linspace(0, n_epoch - 1, int(n_epoch * args.sampling_factor))
     epcs = np.arange(n_epoch)
+    if args.save_csv:
+        df = pd.DataFrame()
+
+    xnew = np.linspace(0, n_epoch - 1, int(n_epoch * args.sampling_factor))
     for i, (a, c, p, l) in enumerate(zip(arrays, cycle(colors), paths, labels)):
         mean_a = a.mean(axis=1)
 
@@ -81,9 +85,12 @@ def run(args: argparse.Namespace) -> None:
 
         if len(allowed_cols) > 1 and not args.no_mean:
             mean_column = mean_a[:, allowed_cols].mean(axis=1)
-            lw: float = 2 if not args.only_mean else 1.5
+            lw: float = 3 if not args.only_mean else 1.5
             lab: str = f"{l}-mean" if not args.only_mean else l
             ax.plot(epcs, mean_column[:n_epoch], color=c, linestyle='-', label=lab, linewidth=lw)
+
+            if args.save_csv:
+                df[lab] = mean_column[:n_epoch]
 
         if not args.only_mean:
             for k, s in zip(allowed_cols, styles):
@@ -109,6 +116,9 @@ def run(args: argparse.Namespace) -> None:
                     sty = s
 
                 ax.plot(x, y, linestyle=sty, color=c, label=lab, linewidth=1.5)
+                if args.save_csv:
+                    df[lab] = y
+
                 if args.min:
                     print(f"{Path(p).parents[0]}, class {k}: {values.min():.04f}")
                 else:
@@ -128,6 +138,9 @@ def run(args: argparse.Namespace) -> None:
 
     if not args.headless:
         plt.show()
+
+    if args.save_csv and args.savefig:
+        df.to_csv(Path(args.savefig).with_suffix(".csv"), float_format="%.4f", index_label="epoch")
 
 
 def get_args() -> argparse.Namespace:
@@ -165,6 +178,8 @@ def get_args() -> argparse.Namespace:
                         help="Careful: put an extra space at the beginning of the string, to avoid a parsing error.")
     parser.add_argument("--loc", type=str, default=None, choices=matplotlib.legend.Legend.codes.copy())
     parser.add_argument("--epc", type=int, help="Dummy to maintain call compatibility with hist.py and moustache.py")
+
+    parser.add_argument("--save_csv", action='store_true', help="Save the data used for the plot a a csv.")
 
     args = parser.parse_args()
 
