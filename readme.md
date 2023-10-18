@@ -13,6 +13,7 @@ The code has been simplified and updated to the latest Python and Pytorch releas
 
 ## Table of contents
 * [Table of contents](#table-of-contents)
+* [License](#license)
 * [Requirements (PyTorch)](#requirements-pytorch)
 * [Other frameworks](#other-frameworks)
     * [Keras/tensorflow](#kerastensorflow)
@@ -30,6 +31,8 @@ The code has been simplified and updated to the latest Python and Pytorch releas
     * [Do I need to normalize the distance map?](#do-i-need-to-normalize-the-distance-map)
 * [Other papers using boundary loss](#other-papers-using-boundary-loss)
 
+## License
+This code is under [MIT license](LICENSE), which permits re-use both in open and closed-source software.
 
 ## Requirements (PyTorch)
 Core implementation (to integrate the boundary loss into your own code):

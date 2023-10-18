@@ -1,3 +1,6 @@
+# TODO: clarify licensing for this piece of code
+#       (author is @akamojo)
+
 # # Simple script which includes functions for calculating surface loss in keras
 # ## See the related discussion: https://github.com/LIVIAETS/boundary-loss/issues/14
 
